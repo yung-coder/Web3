@@ -24,6 +24,9 @@ contract Escrow {
    }
 
 
+   // list properties 
+
+
    
 
 
