@@ -6,6 +6,7 @@ import close from '../assets/close.svg';
 const Home = ({ home, provider, escrow, togglePop }) => {
 
     return (
+        // frontend skip 
         <div className="home">
         </div>
     );
