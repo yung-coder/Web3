@@ -22,6 +22,10 @@ function App() {
 
   const [homes, setHomes] = useState([])
 
+  const [home, setHome] = useState([])
+  const [toggle, setToggle] = useState([])
+  
+
   const loadBlockchainData = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     setProvider(provider)
@@ -58,6 +62,12 @@ function App() {
   useEffect(() => {
     loadBlockchainData()
   }, [])
+
+
+  const  togglePop = (home) => {
+     setHome(home);
+     toggle ? setToggle(false) : setToggle(true)
+  }
 
   return (
     <div>
