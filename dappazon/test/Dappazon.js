@@ -73,7 +73,88 @@ describe("Dappazon", () => {
       expect(transaction).to.emit(dappazon, "List")
     })
 
-    
+
+  })
+
+
+  describe("Buying", () => {
+
+    let transaction;
+
+
+    beforeEach(async () => {
+      transaction = await dappazon.connect(deployer).list(
+        ID,
+        NAME,
+        CATEGORY,
+        IMAGE,
+        COST,
+        RATING,
+        STOCK
+      )
+
+      await transaction.wait()
+
+
+      // Buy an item
+      transaction = await dappazon.connect(buyer).buy(ID, { value: COST })
+    })
+
+    it('Updates the contract balance', async () => {
+      const result = await ethers.provider.getBalance(dappazon.address)
+      expect(result).to.equal(COST)
+    })
+
+
+    it('Adds the order', async () => {
+      const order = await dappazon.orders(buyer.address, 1)
+
+      expect(order.time).to.be.greaterThan(0)
+      expect(order.item.name).to.be.equal(NAME)
+    })
+
+
+    it('Updates buyers order count', async () => {
+      const result = await dappazon.orderCount(buyer.address)
+      expect(result).to.equal(1)
+    })
+
+    it('Emits Buy event', async () => {
+      expect(transaction).to.emit(dappazon, "Buy")
+    })
+
+  })
+
+
+  describe("Withdrawing", () => {
+    let balanceBefore
+
+    beforeEach(async () => {
+      // List a item
+      let transaction = await dappazon.connect(deployer).list(ID, NAME, CATEGORY, IMAGE, COST, RATING, STOCK)
+      await transaction.wait()
+
+      // Buy a item
+      transaction = await dappazon.connect(buyer).buy(ID, { value: COST })
+      await transaction.wait()
+
+      // Get Deployer balance before
+      balanceBefore = await ethers.provider.getBalance(deployer.address)
+
+      // Withdraw
+      transaction = await dappazon.connect(deployer).withdraw()
+      await transaction.wait()
+    })
+
+    it('Updates the owner balance', async () => {
+      const balanceAfter = await ethers.provider.getBalance(deployer.address)
+      expect(balanceAfter).to.be.greaterThan(balanceBefore)
+    })
+
+    it('Updates the contract balance', async () => {
+      const result = await ethers.provider.getBalance(dappazon.address)
+      expect(result).to.equal(0)
+    })
   })
 
 
