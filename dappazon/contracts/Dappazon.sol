@@ -95,4 +95,6 @@ contract Dappazon {
         (bool success, ) = owner.call{value: address(this).balance}("");
         require(success);
     }
+
+    // frontend skip just connection 
 }
