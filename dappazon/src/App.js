@@ -81,6 +81,8 @@ function App() {
         <Product item={item} provider={provider} account={account} dappazon={dappazon} togglePop={togglePop} />
       )}
 
+      // now just run and try it out live
+
     </div>
   );
 }
