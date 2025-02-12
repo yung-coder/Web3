@@ -13,15 +13,14 @@ import Dappazon from './abis/Dappazon.json'
 import config from './config.json'
 
 function App() {
-  const [provider, setProvider] = useState(null);
-  const [account, setAccount] = useState(null);
-  const [dappazon, setDappazon] = useState(null);
+  const [provider, setProvider] = useState(null)
+  const [dappazon, setDappazon] = useState(null)
 
+  const [account, setAccount] = useState(null)
 
   const [electronics, setElectronics] = useState(null)
   const [clothing, setClothing] = useState(null)
   const [toys, setToys] = useState(null)
-
 
   const [item, setItem] = useState({})
   const [toggle, setToggle] = useState(false)
@@ -31,17 +30,13 @@ function App() {
     toggle ? setToggle(false) : setToggle(true)
   }
 
-  const laodBlockchainData = async () => {
-    const provider = new ethers.providers.Web3Provider(window.etherum)
+  const loadBlockchainData = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
     setProvider(provider)
-
     const network = await provider.getNetwork()
-    console.log(network);
 
     const dappazon = new ethers.Contract(config[network.chainId].dappazon.address, Dappazon, provider)
     setDappazon(dappazon)
-
-    // list items 
 
     const items = []
 
@@ -57,11 +52,10 @@ function App() {
     setElectronics(electronics)
     setClothing(clothing)
     setToys(toys)
-
   }
 
   useEffect(() => {
-    laodBlockchainData()
+    loadBlockchainData()
   }, [])
 
   return (
@@ -80,8 +74,6 @@ function App() {
       {toggle && (
         <Product item={item} provider={provider} account={account} dappazon={dappazon} togglePop={togglePop} />
       )}
-
-      // now just run and try it out live
 
     </div>
   );
