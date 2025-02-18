@@ -55,6 +55,25 @@ function App() {
 
   useEffect(() => {
     loadBlockchainData()
+
+
+    socket.on("connect", () => {
+      socket.emit('get messages')
+    })
+
+    socket.on('new message', (messages) => {
+      setMessages(messages)
+    })
+
+    socket.on('get messages', (messages) => {
+      setMessages(messages)
+    })
+
+    return () => {
+      socket.off('connect')
+      socket.off('new message')
+      socket.off('get messages')
+    }
   })
 
   return (
