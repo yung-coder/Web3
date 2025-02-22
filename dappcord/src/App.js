@@ -91,6 +91,8 @@ function App() {
           currentChannel={currentChannel}
           setCurrentChannel={setCurrentChannel}
         />
+
+        <Messages account={account} messages={messages} currentChannel={currentChannel} />
       </main>
     </div>
   );
