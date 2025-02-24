@@ -94,6 +94,8 @@ function App() {
           setToggle={setToggle}
         />
       )}
+      
+      // solidity basics and intro projects done and rust too now seprate project building and then moving forward 
     </div>
   );
 }
